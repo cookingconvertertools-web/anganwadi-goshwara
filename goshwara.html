@@ -822,20 +822,11 @@
         girlsInput.addEventListener('input', updateTotal);
         updateTotal();
 
-        function updateDisplayMonth() {
-            const monthNames = ['जाने','फेब्रु','मार्च','एप्रि','मे','जून','जुलै','ऑग','सप्टें','ऑक्ट','नोव्ह','डिसें'];
-            displayMonthSpan.textContent = `${monthNames[monthSelect.value-1]} ${yearInput.value}`;
-        }
-        monthSelect.addEventListener('change', updateDisplayMonth);
-        yearInput.addEventListener('input', updateDisplayMonth);
-        updateDisplayMonth();
-
         const marathiDigits = ['०','१','२','३','४','५','६','७','८','९'];
 
         // Convert number to Marathi integer (no decimals)
         function toMarathiInteger(num) {
             if (num === undefined || num === null || isNaN(num)) return '';
-            // Round to nearest integer (since all values are grams, we want whole numbers)
             const intNum = Math.round(num);
             const numStr = intNum.toString();
             return numStr.split('').map(ch => {
@@ -843,6 +834,15 @@
                 return marathiDigits[digit];
             }).join('');
         }
+
+        function updateDisplayMonth() {
+            const monthNames = ['जाने','फेब्रु','मार्च','एप्रि','मे','जून','जुलै','ऑग','सप्टें','ऑक्ट','नोव्ह','डिसें'];
+            const yearMarathi = toMarathiInteger(yearInput.value);
+            displayMonthSpan.textContent = `${monthNames[monthSelect.value-1]} ${yearMarathi}`;
+        }
+        monthSelect.addEventListener('change', updateDisplayMonth);
+        yearInput.addEventListener('input', updateDisplayMonth);
+        updateDisplayMonth();
 
         function getMarathiNumbers(limit) {
             const nums = [];
@@ -1062,7 +1062,8 @@
 
                     html += '<tr>';
                     html += `<td>${marathiNumbers[i]}</td>`;
-                    html += `<td>${boys}</td><td>${girls}</td><td>${totalKids}</td>`;
+                    // Convert child counts to Marathi
+                    html += `<td>${toMarathiInteger(boys)}</td><td>${toMarathiInteger(girls)}</td><td>${toMarathiInteger(totalKids)}</td>`;
 
                     for (let j = 0; j < ingredients.length; j++) {
                         let dist = distribution[j];
@@ -1218,10 +1219,13 @@
                 overlay.classList.remove('open');
             });
         }
-        // Set current year in footer
+        // Set current year in footer using Marathi digits
         const yearSpan = document.getElementById('currentYear');
         if (yearSpan) {
-            yearSpan.textContent = new Date().getFullYear();
+            const marathiDigits = ['०','१','२','३','४','५','६','७','८','९'];
+            const year = new Date().getFullYear().toString();
+            const marathiYear = year.split('').map(ch => marathiDigits[parseInt(ch)]).join('');
+            yearSpan.textContent = marathiYear;
         }
     })();
 </script>
