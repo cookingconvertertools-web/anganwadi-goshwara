@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>पोषण आहार नोंदवही + गोषवारा (महिन्यानुसार दिवस + योग्य रविवार)</title>
+    <style>
+        /* ---------- global mobile-first blue ink theme ---------- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Arial', 'Helvetica', sans-serif;
+            background-color: #f5f9ff;
+            color: #003366;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* header (same as about page) */
+        .app-header {
+            background: #004cbf;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .app-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        .menu-btn, .back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 0 10px;
+        }
+        .back-btn {
+            font-size: 1.5rem;
+        }
+
+        /* drawer */
+        .drawer {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+            transition: left 0.3s ease;
+            z-index: 200;
+            padding: 20px;
+            border-right: 2px solid #004cbf;
+        }
+        .drawer.open {
+            left: 0;
+        }
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 150;
+            display: none;
+        }
+        .drawer-overlay.open {
+            display: block;
+        }
+        .drawer ul {
+            list-style: none;
+            margin-top: 40px;
+        }
+        .drawer li {
+            margin-bottom: 20px;
+        }
+        .drawer a {
+            text-decoration: none;
+            color: #003366;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: block;
+            padding: 10px;
+            border-radius: 30px;
+            background: #eaf3ff;
+            text-align: center;
+        }
+
+        /* footer */
+        .app-footer {
+            background: #d9e8ff;
+            color: #003366;
+            text-align: center;
+            padding: 15px;
+            font-size: 0.9rem;
+            border-top: 2px solid #004cbf;
+        }
+
+        /* page navigation - stays at top */
+        .page-tab {
+            display: flex;
+            gap: 8px;
+            margin: 10px 10px 0 10px;
+            background: #d9e8ff;
+            padding: 8px;
+            border-radius: 50px;
+            border: 2px solid #1e4d8f;
+            flex-shrink: 0;
+        }
+        .page-btn {
+            flex: 1;
+            background: white;
+            border: none;
+            padding: 12px 5px;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 40px;
+            color: #003366;
+            border: 1px solid #7ca4d4;
+            cursor: pointer;
+        }
+        .page-btn.active {
+            background: #004cbf;
+            color: white;
+            border-color: #00215a;
+        }
+
+        /* main scrollable content */
+        .scrollable-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* page containers */
+        .page {
+            display: none;
+        }
+        .page.active-page {
+            display: block;
+        }
+
+        /* header line - mobile stacking */
+        .header-line {
+            width: 100%;
+            border: 2px solid #1e4d8f;
+            border-bottom: none;
+            padding: 12px 8px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: clamp(14px, 4vw, 18px);
+            background: #e2edff;
+            color: #003087;
+            border-radius: 8px 8px 0 0;
+            gap: 8px;
+        }
+
+        /* Stack header vertically on mobile */
+        @media (max-width: 600px) {
+            .header-line {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
+
+        /* control panel - mobile first, all vertical */
+        .control-panel {
+            border: 2px solid #1e4d8f;
+            padding: 15px 12px;
+            margin-bottom: 15px;
+            background: #eaf3ff;
+            border-radius: 0 0 12px 12px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #002b70;
+            margin: 16px 0 12px 0;
+            border-left: 6px solid #1e4d8f;
+            padding-left: 12px;
+            background: linear-gradient(to right, #d4e4ff, transparent);
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            background: white;
+            padding: 10px 12px;
+            border-radius: 24px;
+            border: 1px solid #7ca4d4;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .input-group label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #003d99;
+            margin-bottom: 6px;
+        }
+
+        .input-group input, .input-group select {
+            padding: 12px 14px;
+            border: 1.5px solid #abc0e0;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            background: #f9fcff;
+            color: #002b70;
+            font-weight: 500;
+            outline: none;
+            width: 100%;
+        }
+
+        .btn {
+            background: #004cbf;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            border-radius: 60px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #00215a;
+            margin: 8px 0;
+            border: 1px solid #80b0ff;
+            width: 100%;
+        }
+        .btn-small {
+            padding: 12px 16px;
+            font-size: 1.1rem;
+        }
+
+        .btn-print {
+            background: #006d2e;
+            box-shadow: 0 4px 0 #00401b;
+        }
+        .btn-print2 {
+            background: #1e6d5e;
+            box-shadow: 0 4px 0 #004d40;
+        }
+        .btn-add {
+            background: #1e6d5e;
+        }
+        .btn-remove {
+            background: #b85e00;
+        }
+
+        /* leave controls (original, will be inside collapsible) */
+        .leave-controls {
+            background: #fff8e7;
+            border: 2px solid #b88b3d;
+            padding: 15px 12px;
+            border-radius: 40px;
+            display: block;
+            margin: 15px 0;
+        }
+        .leave-controls select, .leave-controls input {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 12px;
+            border-radius: 40px;
+            border: 1.5px solid #b88b3d;
+        }
+
+        /* ingredient management */
+        .ingredient-item {
+            background: white;
+            border: 2px solid #7ca4d4;
+            border-radius: 30px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .ingredient-header {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .ingredient-header input {
+            flex: 2;
+            padding: 10px;
+            border-radius: 40px;
+            border: 1.5px solid #abc0e0;
+            font-size: 1rem;
+        }
+        .ingredient-header button {
+            flex: 1;
+            padding: 10px;
+            border-radius: 40px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* table wrapper */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin: 20px 0 10px 0;
+            border-radius: 20px;
+            border: 2px solid #1e4d8f;
+            background: white;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 900px;
+            font-size: 13px;
+            background: white;
+        }
+
+        th {
+            background-color: #d1e2ff;
+            color: #002b70;
+            font-weight: 700;
+            padding: 8px 3px;
+            border: 1px solid #3a6ab0;
+        }
+
+        td {
+            border: 1px solid #9bb6da;
+            text-align: center;
+            padding: 6px 3px;
+            color: #001f4f;
+        }
+
+        .empty-top {
+            background-color: #f0f6ff;
+            color: #003d99;
+            font-weight: bold;
+        }
+
+        .leave-row td {
+            background-color: #ffefcf;
+        }
+        /* Make holiday text red */
+        .leave-row td,
+        .leave-message {
+            color: #ff0000 !important;
+        }
+
+        .footer-row td {
+            background-color: #c9dff3;
+            border-top: 3px solid #002b70;
+            font-weight: 700;
+        }
+
+        /* summary page */
+        .summary-container {
+            background: white;
+            border: 2px solid #1e4d8f;
+            border-radius: 24px;
+            padding: 15px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .summary-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #002b70;
+            text-align: center;
+            margin: 5px 0 15px;
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            border: 2px solid #1e4d8f;
+        }
+
+        .summary-table th {
+            background-color: #c1d9ff;
+            padding: 12px 4px;
+            font-size: 1rem;
+            border: 1px solid #1e4d8f;
+        }
+
+        .summary-table td {
+            padding: 10px 4px;
+            border: 1px solid #7ca4d4;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .label-col {
+            text-align: left !important;
+            padding-left: 12px !important;
+            font-weight: 700;
+            background-color: #eaf1ff;
+            width: 160px;
+        }
+
+        .kamache-divas {
+            background-color: #fcf2db;
+            font-weight: 700;
+        }
+
+        .plus-operator {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #006400;
+            margin: 0 4px;
+        }
+
+        /* ---------- ad styles ---------- */
+        .ad {
+            background: #f0f0f0;
+            border: 1px dashed #aaa;
+            color: #666;
+            text-align: center;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 20px;
+            font-size: 1rem;
+        }
+
+        .ad-last {
+            margin-bottom: 30px;
+        }
+
+        /* ---------- collapsible sections ---------- */
+        .collapsible-header {
+            background: #004cbf;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 40px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            margin: 15px 0 5px 0;
+            border: none;
+            width: 100%;
+            text-align: left;
+        }
+        .collapsible-header:after {
+            content: '−';
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        .collapsible-header.collapsed:after {
+            content: '+';
+        }
+        .collapsible-content {
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .collapsible-content.collapsed {
+            max-height: 0;
+        }
+
+        /* print buttons at bottom */
+        .print-bottom {
+            margin: 20px 0 30px 0;
+        }
+
+        /* ========== PRINT: FULL PAGE FIT ========== */
+        @media print {
+            .no-print, .page-tab, .btn, .leave-controls, .control-panel, .ad, .collapsible-header, .app-header, .drawer, .drawer-overlay, .app-footer {
+                display: none !important;
+            }
+            .page {
+                display: block !important;
+                page-break-after: always;
+                page-break-inside: avoid;
+                height: auto;
+                overflow: visible;
+            }
+            @page {
+                size: A4 landscape;
+                margin: 2mm 2mm 0mm 2mm;
+            }
+            body {
+                padding: 0;
+                margin: 0;
+                background: white;
+                height: 100%;
+            }
+            .scrollable-content {
+                overflow: visible;
+                padding: 0;
+            }
+            #page1 {
+                page-break-after: always;
+                height: 100%;
+            }
+            .table-wrapper {
+                overflow: visible !important;
+                border: none;
+                margin: 0;
+                padding: 0;
+                height: auto;
+            }
+            #nutritionTable {
+                font-size: 7.2px !important;
+                line-height: 1.05;
+                width: 100%;
+                border-collapse: collapse;
+                page-break-after: avoid;
+                page-break-before: avoid;
+                page-break-inside: avoid;
+                border: 1px solid #000;
+            }
+            #nutritionTable tr,
+            #nutritionTable td,
+            #nutritionTable th,
+            #nutritionTable tbody,
+            #nutritionTable thead,
+            #nutritionTable tfoot {
+                page-break-inside: avoid !important;
+                page-break-after: avoid !important;
+                page-break-before: avoid !important;
+            }
+            #nutritionTable td,
+            #nutritionTable th {
+                padding: 0.5px 0.3px !important;
+                border: 0.8px solid #000;
+            }
+            #nutritionTable th {
+                font-size: 7px;
+                padding: 1px 0.3px !important;
+            }
+            #nutritionTable tfoot {
+                display: table-footer-group;
+            }
+            .header-line {
+                margin-bottom: 1px;
+                padding: 2px 2px;
+                font-size: 10px;
+                border: 1px solid #000;
+            }
+            #page2 {
+                page-break-after: avoid;
+            }
+            .summary-container {
+                page-break-inside: avoid;
+                border: 2px solid #000;
+                padding: 5px;
+                margin-top: 0;
+            }
+            .footer-row td {
+                background-color: #c9dff3 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .leave-row td {
+                background-color: #ffefcf !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .header-line span {
+                font-size: 9px;
+            }
+            .collapsible-content {
+                max-height: none !important;
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header (same as about page) -->
+<header class="app-header no-print">
+    <button class="menu-btn" id="menuBtn">☰</button>
+    <h1>पोषण आहार</h1>
+    <button class="back-btn" id="backBtn" onclick="window.location.href='index.html'">↩</button>
+</header>
+
+<!-- Drawer (same as about page) -->
+<div class="drawer" id="drawer">
+    <ul>
+        <li><a href="index.html">🏠 होम</a></li>
+        <li><a href="about.html">📄 About</a></li>
+        <li><a href="privacy.html">🔏 Privacy</a></li>
+        <li><a href="terms.html">📜 Terms</a></li>
+        <li><a href="contact.html">📞 Contact</a></li>
+    </ul>
+</div>
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<!-- Page tabs (existing) -->
+<div class="page-tab no-print">
+    <button class="page-btn active" id="btnPage1">📋 दैनंदिन नोंदवही</button>
+    <button class="page-btn" id="btnPage2">📊 गोषवारा</button>
+</div>
+
+<!-- Main scrollable content (existing) -->
+<div class="scrollable-content">
+
+    <div id="page1" class="page active-page">
+
+        <div class="ad no-print" id="ad1">📢 Ad Placeholder 1 (top)</div>
+
+        <div class="header-line">
+            <span>पूरक पोषण आहार हिशोब नोंदवही</span>
+            <span>महिना - <span id="displayMonth"></span></span>
+            <span>अंगणवाडी - ____________</span>
+        </div>
+
+        <div class="ad no-print" id="ad2">📢 Ad Placeholder 2 (after header)</div>
+
+        <div class="control-panel no-print">
+            <div class="section-title">📅 महिना निवड</div>
+            <div class="input-group">
+                <label>महिना</label>
+                <select id="monthSelect">
+                    <option value="1">जानेवारी</option>
+                    <option value="2">फेब्रुवारी</option>
+                    <option value="3">मार्च</option>
+                    <option value="4">एप्रिल</option>
+                    <option value="5">मे</option>
+                    <option value="6">जून</option>
+                    <option value="7">जुलै</option>
+                    <option value="8">ऑगस्ट</option>
+                    <option value="9">सप्टेंबर</option>
+                    <option value="10">ऑक्टोबर</option>
+                    <option value="11">नोव्हेंबर</option>
+                    <option value="12">डिसेंबर</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>वर्ष</label>
+                <input type="number" id="yearInput" value="2026" min="2020" max="2100" step="1">
+            </div>
+
+            <div class="section-title">👥 मुले/मुली</div>
+            <div class="input-group"><label>👦 मुले</label><input type="number" id="boysCount" value="0" min="0" step="1"></div>
+            <div class="input-group"><label>👧 मुली</label><input type="number" id="girlsCount" value="0" min="0" step="1"></div>
+            <div class="input-group"><label>📊 एकूण</label><input type="number" id="totalChildren" readonly style="background:#ecf3ff;"></div>
+
+            <div class="section-title">🧾 आहार (जोडा/कमी करा)</div>
+            <div id="ingredientsContainer"></div>
+            <button class="btn btn-small btn-add" id="addIngredientBtn">➕ नवीन आहार जोडा</button>
+
+            <div class="section-title">⚖️ प्रति बालक (ग्रॅम) - दर आहारासाठी</div>
+            <div id="perChildContainer"></div>
+
+            <div class="section-title">📦 सुरुवातीची शिल्लक आहार(दि.१ च्या आधी)</div>
+            <div id="initStockContainer"></div>
+
+            <div class="collapsible-header" id="toggleAddSection">➕ नवीन आलेला माल जोडा</div>
+            <div class="collapsible-content" id="addSection">
+                <div class="input-group">
+                    <label>📅 दिनांक निवडा</label>
+                    <select id="addDaySelect"></select>
+                </div>
+                <div id="additionContainer"></div>
+                <button class="btn btn-small btn-add" id="addStockBtn">➕ नवीन आलेला माल नोंदवा</button>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <button class="btn" id="applyBase">✅ सबमिट करा</button>
+                <!-- Print button removed from here -->
+            </div>
+        </div>
+
+        <div class="ad no-print" id="ad3">📢 Ad Placeholder 3 (before leave controls)</div>
+
+        <div class="collapsible-header" id="toggleLeaveSection">🚩 सुट्टीची नोंद</div>
+        <div class="collapsible-content" id="leaveSection">
+            <div class="leave-controls no-print">
+                <select id="leaveDaySelect"></select>
+                <input type="text" id="leaveReason" placeholder="कारण (उदा. होळी)" value="रविवार">
+                <button class="btn btn-small" id="markLeaveBtn" style="background:#b85e00;">🔘 सुट्टी सबमिट करा</button>
+                <button class="btn btn-small" id="resetNormalBtn" style="background:#3f6b9c;">⟲ रीसेट करा</button>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table id="nutritionTable">
+                <thead id="tableHeader">
+                <tr id="headerRow1">
+                    <th rowspan="2">दि.</th>
+                    <th rowspan="2">मुले</th>
+                    <th rowspan="2">मुली</th>
+                    <th rowspan="2">एकूण</th>
+                </tr>
+                <tr id="headerRow2"></tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+                <tfoot id="tableFooter"></tfoot>
+            </table>
+        </div>
+
+        <div class="ad no-print" id="ad4">📢 Ad Placeholder 4 (before bottom)</div>
+        <div class="ad no-print ad-last" id="ad5">📢 Ad Placeholder 5 (bottom of page1)</div>
+
+        <!-- Print button moved to bottom of page1 -->
+        <div class="print-bottom no-print">
+            <button class="btn btn-print" id="printDetailBtn">🖨️ प्रिंट करा</button>
+        </div>
+    </div>
+
+    <div id="page2" class="page">
+        <div class="summary-container">
+            <div class="summary-title">📋 गोषवारा (एकत्रित)</div>
+            <table class="summary-table" id="summaryTable">
+                <thead>
+                <tr><th colspan="10" style="background:#a6c5ff;" id="summaryHeader">मासिक सारांश (ग्रॅममध्ये)</th></tr>
+                <tr id="summaryHeaderRow">
+                    <th>विवरण</th>
+                </tr>
+                </thead>
+                <tbody id="summaryBody">
+                <tr id="row-initial"><td class="label-col">सुरुवातीचे शिल्लक</td></tr>
+                <tr id="row-added"><td class="label-col">गटकार्यात मिळाले</td></tr>
+                <tr id="row-total"><td class="label-col">एकूण (सुरु + मिळाले)</td></tr>
+                <tr id="row-dist"><td class="label-col">महिना वाटप</td></tr>
+                <tr id="row-end"><td class="label-col">अंतिम शिल्लक</td></tr>
+                <tr><td class="label-col kamache-divas">कामाचे दिवस</td><td colspan="9" id="workingDaysCell" style="text-align:left; padding-left:20px;"></td></tr>
+                </tbody>
+            </table>
+            <!-- Print button removed from here -->
+        </div>
+        <div class="ad no-print ad-last" id="ad6">📢 Ad Placeholder 6 (bottom of page2)</div>
+
+        <!-- Print button moved to bottom of page2 -->
+        <div class="print-bottom no-print">
+            <button class="btn btn-print2" id="printSummaryBtn">🖨️ छपाई (गोषवारा)</button>
+        </div>
+    </div>
+
+</div> <!-- end scrollable-content -->
+
+<!-- Footer -->
+<footer class="app-footer no-print">
+    <p>© <span id="currentYear"></span> पोषण आहार. सर्व हक्क राखीव.</p>
+</footer>
+
+<script>
+    (function() {
+        const SHOW_ADS = true;
+        document.querySelectorAll('.ad').forEach(ad => {
+            ad.style.display = SHOW_ADS ? 'block' : 'none';
+        });
+
+        function initCollapsible(headerId, contentId) {
+            const header = document.getElementById(headerId);
+            const content = document.getElementById(contentId);
+            if (!header || !content) return;
+            content.classList.remove('collapsed');
+            header.classList.remove('collapsed');
+            header.addEventListener('click', () => {
+                content.classList.toggle('collapsed');
+                header.classList.toggle('collapsed');
+            });
+        }
+
+        initCollapsible('toggleAddSection', 'addSection');
+        initCollapsible('toggleLeaveSection', 'leaveSection');
+
+        let ingredients = [
+            { name: 'गहू', perChild: 40 },
+            { name: 'साखर', perChild: 8 },
+            { name: 'तेल', perChild: 10 },
+            { name: 'तांदूळ', perChild: 38 },
+            { name: 'मुगाडाळ', perChild: 10 },
+            { name: 'चना', perChild: 24 },
+            { name: 'वाटाणा', perChild: 24 },
+            { name: 'हळद', perChild: 2 },
+            { name: 'तिखट', perChild: 2 },
+            { name: 'मीठ', perChild: 4 }
+        ];
+
+        let currentStock = [];
+        const leaveDays = new Map();
+        const additions = [];
+
+        const ingredientsContainer = document.getElementById('ingredientsContainer');
+        const perChildContainer = document.getElementById('perChildContainer');
+        const initStockContainer = document.getElementById('initStockContainer');
+        const additionContainer = document.getElementById('additionContainer');
+        const tbody = document.getElementById('tableBody');
+        const boysInput = document.getElementById('boysCount');
+        const girlsInput = document.getElementById('girlsCount');
+        const totalInput = document.getElementById('totalChildren');
+        const monthSelect = document.getElementById('monthSelect');
+        const yearInput = document.getElementById('yearInput');
+        const displayMonthSpan = document.getElementById('displayMonth');
+        const addDaySelect = document.getElementById('addDaySelect');
+        const leaveDaySelect = document.getElementById('leaveDaySelect');
+
+        function getDaysInMonth() {
+            const month = parseInt(monthSelect.value);
+            const year = parseInt(yearInput.value);
+            return new Date(year, month, 0).getDate();
+        }
+
+        function updateTotal() {
+            let b = parseInt(boysInput.value) || 0;
+            let g = parseInt(girlsInput.value) || 0;
+            totalInput.value = b + g;
+        }
+        boysInput.addEventListener('input', updateTotal);
+        girlsInput.addEventListener('input', updateTotal);
+        updateTotal();
+
+        function updateDisplayMonth() {
+            const monthNames = ['जाने','फेब्रु','मार्च','एप्रि','मे','जून','जुलै','ऑग','सप्टें','ऑक्ट','नोव्ह','डिसें'];
+            displayMonthSpan.textContent = `${monthNames[monthSelect.value-1]} ${yearInput.value}`;
+        }
+        monthSelect.addEventListener('change', updateDisplayMonth);
+        yearInput.addEventListener('input', updateDisplayMonth);
+        updateDisplayMonth();
+
+        const marathiDigits = ['०','१','२','३','४','५','६','७','८','९'];
+
+        // Convert number to Marathi integer (no decimals)
+        function toMarathiInteger(num) {
+            if (num === undefined || num === null || isNaN(num)) return '';
+            // Round to nearest integer (since all values are grams, we want whole numbers)
+            const intNum = Math.round(num);
+            const numStr = intNum.toString();
+            return numStr.split('').map(ch => {
+                const digit = parseInt(ch, 10);
+                return marathiDigits[digit];
+            }).join('');
+        }
+
+        function getMarathiNumbers(limit) {
+            const nums = [];
+            for (let i = 1; i <= limit; i++) {
+                if (i <= 31) {
+                    const marathi = ["१","२","३","४","५","६","७","८","९","१०","११","१२","१३","१४","१५","१६","१७","१८","१९","२०","२१","२२","२३","२४","२५","२६","२७","२८","२९","३०","३१"];
+                    nums.push(marathi[i-1]);
+                } else {
+                    nums.push(i.toString());
+                }
+            }
+            return nums;
+        }
+
+        function markSundays() {
+            const month = parseInt(monthSelect.value);
+            const year = parseInt(yearInput.value);
+            const firstDay = new Date(year, month-1, 1).getDay();
+            const daysInMonth = getDaysInMonth();
+            for (let [day, reason] of leaveDays.entries()) {
+                if (reason === 'रविवार') {
+                    leaveDays.delete(day);
+                }
+            }
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dayOfWeek = (firstDay + (d-1)) % 7;
+                if (dayOfWeek === 0) {
+                    leaveDays.set(d, 'रविवार');
+                }
+            }
+            renderAll();
+        }
+
+        function updateDayDropdowns() {
+            const daysInMonth = getDaysInMonth();
+            const marathiNums = getMarathiNumbers(daysInMonth);
+            addDaySelect.innerHTML = '';
+            for (let d = 2; d <= daysInMonth; d++) {
+                const option = document.createElement('option');
+                option.value = d;
+                option.textContent = marathiNums[d-1];
+                addDaySelect.appendChild(option);
+            }
+            leaveDaySelect.innerHTML = '';
+            for (let d = 1; d <= daysInMonth; d++) {
+                const option = document.createElement('option');
+                option.value = d;
+                option.textContent = marathiNums[d-1];
+                leaveDaySelect.appendChild(option);
+            }
+        }
+
+        monthSelect.addEventListener('change', () => {
+            updateDayDropdowns();
+            markSundays();
+        });
+        yearInput.addEventListener('change', () => {
+            updateDayDropdowns();
+            markSundays();
+        });
+
+        function renderIngredientInputs() {
+            ingredientsContainer.innerHTML = '';
+            ingredients.forEach((ing, idx) => {
+                const div = document.createElement('div');
+                div.className = 'ingredient-item';
+                div.innerHTML = `
+                    <div class="ingredient-header">
+                        <input type="text" value="${ing.name}" placeholder="साहित्य नाव" id="ing_name_${idx}" oninput="updateIngredientName(${idx}, this.value)">
+                        <button class="btn-small btn-remove" onclick="removeIngredient(${idx})">✖ काढा</button>
+                    </div>
+                `;
+                ingredientsContainer.appendChild(div);
+            });
+            perChildContainer.innerHTML = '';
+            ingredients.forEach((ing, idx) => {
+                const div = document.createElement('div');
+                div.className = 'input-group';
+                div.innerHTML = `
+                    <label id="per_label_${idx}">🌾 ${ing.name} (ग्रॅम)</label>
+                    <input type="number" id="per_${idx}" value="${ing.perChild}" step="1" onchange="updatePerChild(${idx}, this.value)">
+                `;
+                perChildContainer.appendChild(div);
+            });
+            initStockContainer.innerHTML = '';
+            ingredients.forEach((ing, idx) => {
+                const div = document.createElement('div');
+                div.className = 'input-group';
+                div.innerHTML = `
+                    <label id="init_label_${idx}">📦 ${ing.name} सुरुवात</label>
+                    <input type="number" id="init_${idx}" value="10000" step="1">
+                `;
+                initStockContainer.appendChild(div);
+            });
+            additionContainer.innerHTML = '';
+            ingredients.forEach((ing, idx) => {
+                const div = document.createElement('div');
+                div.className = 'input-group';
+                div.innerHTML = `
+                    <label id="add_label_${idx}">➕ ${ing.name} अतिरिक्त</label>
+                    <input type="number" id="add_${idx}" value="0" step="1">
+                `;
+                additionContainer.appendChild(div);
+            });
+            updateTableHeaders();
+        }
+
+        window.updateIngredientName = function(idx, newName) {
+            ingredients[idx].name = newName;
+            const perLabel = document.getElementById(`per_label_${idx}`);
+            if (perLabel) perLabel.innerHTML = `🌾 ${newName} (ग्रॅम)`;
+            const initLabel = document.getElementById(`init_label_${idx}`);
+            if (initLabel) initLabel.innerHTML = `📦 ${newName} सुरुवात`;
+            const addLabel = document.getElementById(`add_label_${idx}`);
+            if (addLabel) addLabel.innerHTML = `➕ ${newName} अतिरिक्त`;
+            updateTableHeaders();
+            renderAll();
+        };
+
+        window.updatePerChild = function(idx, value) {
+            ingredients[idx].perChild = Math.round(parseFloat(value) || 0);
+            renderAll();
+        };
+
+        window.addIngredient = function() {
+            ingredients.push({ name: 'नवीन', perChild: 0 });
+            renderIngredientInputs();
+            renderAll();
+        };
+
+        window.removeIngredient = function(idx) {
+            ingredients.splice(idx, 1);
+            renderIngredientInputs();
+            renderAll();
+        };
+
+        function updateTableHeaders() {
+            const headerRow1 = document.getElementById('headerRow1');
+            const headerRow2 = document.getElementById('headerRow2');
+            let html1 = '<th rowspan="2">दि.</th><th rowspan="2">मुले</th><th rowspan="2">मुली</th><th rowspan="2">एकूण</th>';
+            let html2 = '';
+            ingredients.forEach(ing => {
+                const safeName = ing.name.replace(/\s/g, '_');
+                html1 += `<th>${ing.name}</th><th class="empty-top" id="header_${safeName}"></th>`;
+                html2 += `<th>वा</th><th>शि</th>`;
+            });
+            headerRow1.innerHTML = html1;
+            headerRow2.innerHTML = html2;
+        }
+
+        function getPerAmounts() {
+            return ingredients.map(ing => ing.perChild);
+        }
+
+        function getInitialStock() {
+            return ingredients.map((_, idx) => {
+                const el = document.getElementById(`init_${idx}`);
+                return el ? Math.round(parseFloat(el.value) || 0) : 0;
+            });
+        }
+
+        function getTotalAdditions() {
+            let total = new Array(ingredients.length).fill(0);
+            additions.forEach(a => {
+                for (let i=0; i<ingredients.length; i++) total[i] += a.amounts[i];
+            });
+            return total;
+        }
+
+        function applyInitialStock() {
+            currentStock = getInitialStock();
+            renderAll();
+        }
+
+        function renderAll() {
+            let boys = parseInt(boysInput.value) || 0;
+            let girls = parseInt(girlsInput.value) || 0;
+            let totalKids = boys + girls;
+            let perAmounts = getPerAmounts();
+            const daysInMonth = getDaysInMonth();
+            const marathiNumbers = getMarathiNumbers(daysInMonth);
+
+            let runningStock = [...currentStock];
+            let totalDistribution = new Array(ingredients.length).fill(0);
+
+            let validLeaveDays = 0;
+            for (let [day, reason] of leaveDays.entries()) {
+                if (day <= daysInMonth) validLeaveDays++;
+            }
+            let workingDaysCount = daysInMonth - validLeaveDays;
+
+            let html = '';
+
+            for (let i = 0; i < daysInMonth; i++) {
+                let dayNum = i + 1;
+                const isLeave = leaveDays.has(dayNum);
+
+                let addToday = additions.filter(a => a.day === dayNum).reduce((acc, a) => {
+                    for (let j=0; j<ingredients.length; j++) acc[j] += a.amounts[j];
+                    return acc;
+                }, new Array(ingredients.length).fill(0));
+
+                // Store previous stock before addition for display
+                let previousStock = [...runningStock];
+
+                for (let j=0; j<ingredients.length; j++) {
+                    if (addToday[j] > 0) runningStock[j] += addToday[j];
+                }
+
+                if (isLeave) {
+                    let msg = `----- ${marathiNumbers[i]} : ${leaveDays.get(dayNum)} -----`;
+                    if (addToday.some(v => v > 0)) msg += ' +अतिरिक्त';
+                    html += `<tr class="leave-row"><td colspan="${4 + 2*ingredients.length}" class="leave-message">${msg}</td></tr>`;
+                } else {
+                    let distribution = perAmounts.map(p => p * totalKids);
+                    for (let j=0; j<ingredients.length; j++) totalDistribution[j] += distribution[j];
+
+                    html += '<tr>';
+                    html += `<td>${marathiNumbers[i]}</td>`;
+                    html += `<td>${boys}</td><td>${girls}</td><td>${totalKids}</td>`;
+
+                    for (let j = 0; j < ingredients.length; j++) {
+                        let dist = distribution[j];
+                        let afterStock = runningStock[j] - dist;
+                        if (afterStock < 0) afterStock = 0;
+
+                        // वाटप cell
+                        html += `<td>${toMarathiInteger(dist)}</td>`;
+
+                        // शिल्लक cell – show calculation if there was an addition
+                        let shillakText;
+                        if (addToday[j] > 0) {
+                            // Format: previous + addition - distribution = afterStock
+                            shillakText = `${toMarathiInteger(previousStock[j])}+${toMarathiInteger(addToday[j])}-${toMarathiInteger(dist)}=${toMarathiInteger(afterStock)}`;
+                        } else {
+                            shillakText = toMarathiInteger(afterStock);
+                        }
+                        html += `<td>${shillakText}</td>`;
+
+                        runningStock[j] = afterStock;
+                    }
+                    html += '</tr>';
+                }
+            }
+
+            tbody.innerHTML = html;
+
+            let endStock = [...runningStock];
+            let initialStock = [...currentStock];
+            let totalAdded = getTotalAdditions();
+
+            let footerHtml = '<tr class="footer-row"><td colspan="4" class="footer-label">सुरुवात शिल्लक:</td>';
+            for (let j=0; j<ingredients.length; j++) footerHtml += `<td></td><td>${toMarathiInteger(initialStock[j])}</td>`;
+            footerHtml += '</tr><tr class="footer-row"><td colspan="4" class="footer-label">एकूण वाटप:</td>';
+            // Modified: put total distribution under शिल्लक column (empty वाटप, value in शिल्लक)
+            for (let j=0; j<ingredients.length; j++) footerHtml += `<td></td><td>${toMarathiInteger(totalDistribution[j])}</td>`;
+            footerHtml += '</tr><tr class="footer-row"><td colspan="4" class="footer-label">अखेर शिल्लक:</td>';
+            for (let j=0; j<ingredients.length; j++) footerHtml += `<td></td><td>${toMarathiInteger(endStock[j])}</td>`;
+            footerHtml += '</tr>';
+            document.getElementById('tableFooter').innerHTML = footerHtml;
+
+            ingredients.forEach((ing, idx) => {
+                const safeName = ing.name.replace(/\s/g, '_');
+                const cell = document.getElementById(`header_${safeName}`);
+                if (cell) cell.textContent = toMarathiInteger(initialStock[idx]);
+            });
+
+            updateSummaryPage(initialStock, totalAdded, totalDistribution, endStock, workingDaysCount);
+        }
+
+        function updateSummaryPage(initialStock, totalAdded, totalDistribution, endStock, workingDaysCount) {
+            const headerRow = document.getElementById('summaryHeaderRow');
+            let headerHtml = '<th>विवरण</th>';
+            ingredients.forEach(ing => {
+                headerHtml += `<th>${ing.name}</th>`;
+            });
+            headerRow.innerHTML = headerHtml;
+            document.getElementById('summaryHeader').colSpan = ingredients.length + 1;
+
+            const rows = {
+                initial: document.getElementById('row-initial'),
+                added: document.getElementById('row-added'),
+                total: document.getElementById('row-total'),
+                dist: document.getElementById('row-dist'),
+                end: document.getElementById('row-end')
+            };
+
+            Object.values(rows).forEach(row => {
+                while (row.children.length > 1) row.removeChild(row.lastChild);
+            });
+
+            for (let j=0; j<ingredients.length; j++) {
+                rows.initial.insertAdjacentHTML('beforeend', `<td>${toMarathiInteger(initialStock[j])}</td>`);
+                rows.added.insertAdjacentHTML('beforeend', `<td>${toMarathiInteger(totalAdded[j])}</td>`);
+                rows.total.insertAdjacentHTML('beforeend', `<td>${toMarathiInteger(initialStock[j])} <span class="plus-operator">+</span> ${toMarathiInteger(totalAdded[j])} <span class="plus-operator">=</span> ${toMarathiInteger(initialStock[j] + totalAdded[j])}</td>`);
+                rows.dist.insertAdjacentHTML('beforeend', `<td>${toMarathiInteger(totalDistribution[j])}</td>`);
+                rows.end.insertAdjacentHTML('beforeend', `<td>${toMarathiInteger(endStock[j])}</td>`);
+            }
+
+            document.getElementById('workingDaysCell').textContent = `एकूण कामाचे दिवस = ${workingDaysCount} (सुट्टी वगळून)`;
+        }
+
+        document.getElementById('addIngredientBtn').addEventListener('click', window.addIngredient);
+
+        document.getElementById('addStockBtn').addEventListener('click', function() {
+            let day = parseInt(document.getElementById('addDaySelect').value);
+            let amounts = ingredients.map((_, idx) => {
+                const el = document.getElementById(`add_${idx}`);
+                return el ? Math.round(parseFloat(el.value) || 0) : 0;
+            });
+            if (amounts.every(v => v === 0)) { alert('किमान एका मालाचे प्रमाण टाका'); return; }
+            additions.push({ day, amounts });
+            renderAll();
+            ingredients.forEach((_, idx) => {
+                const el = document.getElementById(`add_${idx}`);
+                if (el) el.value = '0';
+            });
+        });
+
+        document.getElementById('applyBase').addEventListener('click', applyInitialStock);
+
+        document.getElementById('markLeaveBtn').addEventListener('click', function() {
+            let day = parseInt(document.getElementById('leaveDaySelect').value);
+            let reason = document.getElementById('leaveReason').value.trim() || 'सुट्टी';
+            leaveDays.set(day, reason);
+            renderAll();
+        });
+
+        document.getElementById('resetNormalBtn').addEventListener('click', function() {
+            let day = parseInt(document.getElementById('leaveDaySelect').value);
+            if (leaveDays.has(day)) leaveDays.delete(day);
+            renderAll();
+        });
+
+        document.getElementById('printDetailBtn').addEventListener('click', () => window.print());
+        document.getElementById('printSummaryBtn').addEventListener('click', () => window.print());
+
+        document.getElementById('btnPage1').addEventListener('click', function() {
+            document.getElementById('page1').classList.add('active-page');
+            document.getElementById('page2').classList.remove('active-page');
+            document.getElementById('btnPage1').classList.add('active');
+            document.getElementById('btnPage2').classList.remove('active');
+        });
+        document.getElementById('btnPage2').addEventListener('click', function() {
+            document.getElementById('page1').classList.remove('active-page');
+            document.getElementById('page2').classList.add('active-page');
+            document.getElementById('btnPage1').classList.remove('active');
+            document.getElementById('btnPage2').classList.add('active');
+            renderAll();
+        });
+
+        renderIngredientInputs();
+        currentStock = getInitialStock();
+        updateDayDropdowns();
+        markSundays();
+        renderAll();
+    })();
+
+    // Drawer toggle and footer year
+    (function() {
+        const drawer = document.getElementById('drawer');
+        const overlay = document.getElementById('drawerOverlay');
+        const menuBtn = document.getElementById('menuBtn');
+        if (menuBtn) {
+            menuBtn.addEventListener('click', () => {
+                drawer.classList.add('open');
+                overlay.classList.add('open');
+            });
+        }
+        if (overlay) {
+            overlay.addEventListener('click', () => {
+                drawer.classList.remove('open');
+                overlay.classList.remove('open');
+            });
+        }
+        // Set current year in footer
+        const yearSpan = document.getElementById('currentYear');
+        if (yearSpan) {
+            yearSpan.textContent = new Date().getFullYear();
+        }
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>संपर्क - पोषण आहार</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', 'Arial', sans-serif; background-color: #f5f9ff; color: #003366; min-height: 100vh; display: flex; flex-direction: column; }
+        .app-header { background: #004cbf; color: white; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.2); position: sticky; top: 0; z-index: 100; }
+        .app-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; }
+        .menu-btn, .back-btn { background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer; padding: 0 10px; }
+        .back-btn { font-size: 1.5rem; }
+        .drawer { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: white; box-shadow: 2px 0 10px rgba(0,0,0,0.3); transition: left 0.3s ease; z-index: 200; padding: 20px; border-right: 2px solid #004cbf; }
+        .drawer.open { left: 0; }
+        .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 150; display: none; }
+        .drawer-overlay.open { display: block; }
+        .drawer ul { list-style: none; margin-top: 40px; }
+        .drawer li { margin-bottom: 20px; }
+        .drawer a { text-decoration: none; color: #003366; font-size: 1.2rem; font-weight: 600; display: block; padding: 10px; border-radius: 30px; background: #eaf3ff; text-align: center; }
+        .main-content { flex: 1; padding: 20px; }
+        .page-title { font-size: 2rem; font-weight: 700; color: #002b70; margin-bottom: 20px; border-left: 6px solid #1e4d8f; padding-left: 15px; }
+        .content-card { background: white; border-radius: 30px; padding: 25px; border: 2px solid #7ca4d4; box-shadow: 0 4px 8px rgba(0,40,100,0.1); }
+        .contact-info p { font-size: 1.2rem; margin: 15px 0; display: flex; align-items: center; gap: 10px; }
+        .contact-info i { font-size: 1.5rem; width: 30px; color: #004cbf; }
+        /* Footer styles */
+        .app-footer {
+            background: #d9e8ff;
+            color: #003366;
+            text-align: center;
+            padding: 15px;
+            font-size: 0.9rem;
+            border-top: 2px solid #004cbf;
+        }
+        @media print { .no-print { display: none; } }
+    </style>
+</head>
+<body>
+<header class="app-header no-print">
+    <button class="menu-btn" id="menuBtn">☰</button>
+    <h1>संपर्क</h1>
+    <button class="back-btn" id="backBtn" onclick="window.location.href='index.html'">↩</button>
+</header>
+
+<div class="drawer" id="drawer">
+    <ul>
+        <li><a href="index.html">🏠 होम</a></li>
+        <li><a href="about.html">📄 About</a></li>
+        <li><a href="privacy.html">🔏 Privacy</a></li>
+        <li><a href="terms.html">📜 Terms</a></li>
+        <li><a href="contact.html">📞 Contact</a></li>
+    </ul>
+</div>
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<main class="main-content">
+    <h2 class="page-title">संपर्क करा</h2>
+    <div class="content-card contact-info">
+        <p>आपल्याला आमच्या सेवांबद्दल, अंगणवाडी गोषवारा सॉफ्टवेअरबद्दल किंवा वेबसाइटच्या वापराबद्दल कोणतेही प्रश्न, सूचना किंवा अभिप्राय द्यायचा असल्यास आम्हाला नक्की संपर्क करा. अंगणवाडी सेविकांचे काम सोपे आणि जलद करण्यासाठी आम्ही हा छोटासा उपक्रम सुरू केला आहे आणि तुमचे मत आमच्यासाठी अत्यंत महत्त्वाचे आहे.</p>
+
+        <p>या साधनाचा वापर करताना जर तुम्हाला कोणती अडचण येत असेल, काही गोष्टी समजत नसतील किंवा एखादी सुधारणा सुचवायची असेल तर आम्हाला कळवण्यास अजिबात संकोच करू नका. तुमच्या सूचना आणि अभिप्रायाच्या आधारे आम्ही हे साधन अधिक चांगले आणि उपयुक्त बनवण्याचा प्रयत्न करत आहोत.</p>
+
+        <p>अंगणवाडी सेविका दररोज खूप महत्त्वाचे सामाजिक काम करत असतात. त्यामुळे त्यांच्या कामात थोडीशी मदत झाली तरी त्याचा मोठा सकारात्मक परिणाम मुलांवर आणि कुटुंबांवर होऊ शकतो. म्हणूनच आम्ही हे साधन अधिक सोपे, अचूक आणि वापरण्यास सुलभ ठेवण्याचा प्रयत्न करत आहोत. या प्रवासात तुमचे सहकार्य आणि अभिप्राय आमच्यासाठी खूप मोलाचा आहे.</p>
+
+        <p>जर तुम्हाला या वेबसाइटमध्ये काही तांत्रिक समस्या दिसत असतील, जसे की गणना योग्य प्रकारे होत नसणे, माहिती सेव्ह न होणे किंवा इतर कोणतीही अडचण जाणवत असेल तर कृपया आम्हाला त्याची माहिती द्या. तुमच्या कडून मिळालेली माहिती आम्हाला समस्या लवकर शोधून दुरुस्त करण्यास मदत करते.</p>
+
+        <p>तसेच, जर तुम्हाला या सॉफ्टवेअरमध्ये आणखी काही नवीन सुविधा जोडाव्यात असे वाटत असेल, ज्या अंगणवाडी सेविकांसाठी उपयुक्त ठरतील, तर त्या कल्पना देखील आम्हाला जरूर पाठवा. आम्ही नेहमीच वापरकर्त्यांच्या गरजा लक्षात घेऊन सुधारणा करण्याचा प्रयत्न करतो.</p>
+
+        <p>आमच्याशी संपर्क साधण्यासाठी तुम्ही खाली दिलेल्या ईमेल पत्त्यावर संदेश पाठवू शकता. तुमचा प्रश्न, सूचना किंवा अभिप्राय आम्हाला ईमेलद्वारे पाठवा आणि आम्ही शक्य तितक्या लवकर उत्तर देण्याचा प्रयत्न करू.</p>
+
+        <p>संपर्क ईमेल: cookingconverter.tools@gmail.com</p>
+
+        <p>ईमेल पाठवताना कृपया तुमचा प्रश्न किंवा सूचना स्पष्टपणे लिहा, जेणेकरून आम्हाला तुमची समस्या किंवा गरज योग्य प्रकारे समजेल. त्यामुळे आम्ही तुम्हाला अधिक अचूक आणि उपयुक्त उत्तर देऊ शकतो.</p>
+
+        <p>आमचे मुख्य उद्दिष्ट म्हणजे अंगणवाडी सेविकांचे काम सोपे करणे आणि त्यांचा वेळ वाचवणे. तुमच्या सहकार्यामुळे आणि अभिप्रायामुळे आम्हाला हे उद्दिष्ट अधिक प्रभावीपणे साध्य करता येईल.</p>
+
+        <p>आपण दिलेला प्रत्येक अभिप्राय आमच्यासाठी महत्त्वाचा आहे. तुमच्या सूचना आम्हाला या सेवेला अधिक चांगले बनवण्यासाठी प्रेरणा देतात. आम्ही नेहमीच प्रयत्न करतो की हे साधन वापरणाऱ्यांसाठी सोपे, विश्वासार्ह आणि उपयुक्त राहावे.</p>
+
+        <p>आपल्या वेळेबद्दल आणि सहकार्याबद्दल धन्यवाद. अंगणवाडी सेविकांचे काम सोपे करण्याच्या या प्रयत्नात सहभागी झाल्याबद्दल आम्ही आपले मनापासून आभार मानतो.</p>
+    </div>
+</main>
+
+<footer class="app-footer no-print">
+    <p>© <span id="currentYear"></span> पोषण आहार. सर्व हक्क राखीव.</p>
+</footer>
+
+<script>
+    const drawer = document.getElementById('drawer');
+    const overlay = document.getElementById('drawerOverlay');
+    document.getElementById('menuBtn').addEventListener('click', () => {
+        drawer.classList.add('open');
+        overlay.classList.add('open');
+    });
+    overlay.addEventListener('click', () => {
+        drawer.classList.remove('open');
+        overlay.classList.remove('open');
+    });
+
+    // Set current year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

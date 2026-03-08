@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>पोषण आहार नोंदवही</title>
+    <style>
+        /* ---------- global mobile-first blue ink theme ---------- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Arial', 'Helvetica', sans-serif;
+            background-color: #f5f9ff;
+            color: #003366;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* header */
+        .app-header {
+            background: #004cbf;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .app-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        .menu-btn, .back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 0 10px;
+        }
+        .back-btn {
+            font-size: 1.5rem;
+        }
+
+        /* drawer */
+        .drawer {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+            transition: left 0.3s ease;
+            z-index: 200;
+            padding: 20px;
+            border-right: 2px solid #004cbf;
+        }
+        .drawer.open {
+            left: 0;
+        }
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 150;
+            display: none;
+        }
+        .drawer-overlay.open {
+            display: block;
+        }
+        .drawer ul {
+            list-style: none;
+            margin-top: 40px;
+        }
+        .drawer li {
+            margin-bottom: 20px;
+        }
+        .drawer a {
+            text-decoration: none;
+            color: #003366;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: block;
+            padding: 10px;
+            border-radius: 30px;
+            background: #eaf3ff;
+            text-align: center;
+        }
+
+        /* main content - now scrollable */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+        }
+
+        /* home view */
+        .home-view {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100%; /* take full height of scrollable area */
+            padding-bottom: 20px;
+        }
+        .big-button {
+            background: #004cbf;
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 2rem;
+            border-radius: 60px;
+            box-shadow: 0 6px 0 #00215a;
+            margin: 20px;
+            width: 80%;
+            max-width: 300px;
+            text-align: center;
+            font-weight: 700;
+        }
+        .info-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .info-links button {
+            background: #eaf3ff;
+            border: 2px solid #004cbf;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #003366;
+        }
+
+        /* app view (utility) */
+        .app-view {
+            display: none;
+        }
+        .app-view.active {
+            display: block;
+        }
+
+        /* ad banners */
+        .ad {
+            background: #f0f0f0;
+            border: 1px dashed #aaa;
+            color: #666;
+            text-align: center;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 20px;
+            font-size: 1rem;
+            width: 100%;
+        }
+        .ad-top {
+            margin-top: 0;
+        }
+        .ad-bottom {
+            margin-bottom: 0;
+        }
+
+        /* ---------- paste your existing utility styles here ---------- */
+        /* For example: */
+        .header-line { /* ... */ }
+        .control-panel { /* ... */ }
+        /* ... all your utility styles ... */
+
+        /* print styles */
+        @media print {
+            .no-print, .app-header, .drawer, .drawer-overlay, .ad, .home-view, .back-btn, .menu-btn {
+                display: none !important;
+            }
+            .app-view {
+                display: block !important;
+            }
+            .page {
+                display: block !important;
+                page-break-after: always;
+            }
+            @page {
+                size: A4 landscape;
+                margin: 2mm;
+            }
+            table {
+                font-size: 7.2px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- header -->
+<header class="app-header no-print">
+    <button class="menu-btn" id="menuBtn">☰</button>
+    <h1>पोषण आहार</h1>
+    <button class="back-btn" id="backBtn" style="visibility: hidden;">↩</button>
+</header>
+
+<!-- drawer navigation -->
+<div class="drawer" id="drawer">
+    <ul>
+        <li><a href="index.html">🏠 होम</a></li>
+        <li><a href="about.html">📄 About</a></li>
+        <li><a href="privacy.html">🔏 Privacy</a></li>
+        <li><a href="terms.html">📜 Terms</a></li>
+        <li><a href="contact.html">📞 Contact</a></li>
+    </ul>
+</div>
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<!-- main content (scrollable) -->
+<main class="main-content no-print" id="mainContent">
+
+    <!-- home view (default) -->
+    <div class="home-view" id="homeView">
+        <div class="ad ad-home-1">📢 Ad Placeholder 1 (320×50)</div>
+        <button class="big-button" id="goToApp">📊 गोषवारा</button>
+        <div class="ad ad-home-2">📢 Ad Placeholder 2 (300×250)</div>
+        <div class="info-links">
+            <button id="homeAbout">About</button>
+            <button id="homePrivacy">Privacy</button>
+            <button id="homeTerms">Terms</button>
+            <button id="homeContact">Contact</button>
+        </div>
+        <div class="ad ad-home-3">📢 Ad Placeholder 3 (responsive)</div>
+    </div>
+
+    <!-- app view (utility) - hidden initially -->
+    <div class="app-view" id="appView">
+        <!-- ad top -->
+        <div class="ad ad-top">📢 Ad Placeholder 4 (top of utility)</div>
+
+        <!-- ====== PASTE YOUR FULL UTILITY HTML HERE ====== -->
+        <!-- This includes header, controls, tables, summary, etc. -->
+        <div class="header-line">
+            <span>📘 पोषण आहार हिशोब</span>
+            <span>महिना - <span id="displayMonth"></span></span>
+            <span>अंगणवाडी - ____________</span>
+        </div>
+
+        <!-- ... all your utility HTML ... -->
+
+        <!-- ad bottom -->
+        <div class="ad ad-bottom">📢 Ad Placeholder 5 (bottom of utility)</div>
+    </div>
+</main>
+
+<script>
+    // ========== AD TOGGLE ==========
+    // Set to false to hide all ads
+    const SHOW_ADS = true; // ← change to false to disable
+
+    document.querySelectorAll('.ad').forEach(ad => {
+        ad.style.display = SHOW_ADS ? 'block' : 'none';
+    });
+
+    // ========== NAVIGATION ==========
+    const homeView = document.getElementById('homeView');
+    const appView = document.getElementById('appView');
+    const backBtn = document.getElementById('backBtn');
+    const menuBtn = document.getElementById('menuBtn');
+    const drawer = document.getElementById('drawer');
+    const drawerOverlay = document.getElementById('drawerOverlay');
+    const goToAppBtn = document.getElementById('goToApp');
+
+    function showHome() {
+        homeView.style.display = 'flex';
+        appView.classList.remove('active');
+        backBtn.style.visibility = 'hidden';
+        document.querySelector('.app-header h1').textContent = 'पोषण आहार';
+    }
+
+    goToAppBtn.addEventListener('click', () => {
+        window.location.href = 'goshwara.html';
+    });
+    backBtn.addEventListener('click', showHome);
+
+    menuBtn.addEventListener('click', () => {
+        drawer.classList.add('open');
+        drawerOverlay.classList.add('open');
+    });
+    drawerOverlay.addEventListener('click', () => {
+        drawer.classList.remove('open');
+        drawerOverlay.classList.remove('open');
+    });
+
+    // Allow drawer links to navigate
+    document.querySelectorAll('.drawer a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            drawer.classList.remove('open');
+            drawerOverlay.classList.remove('open');
+        });
+    });
+
+    // Home screen info buttons
+    document.getElementById('homeAbout').addEventListener('click', () => window.location.href = 'about.html');
+    document.getElementById('homePrivacy').addEventListener('click', () => window.location.href = 'privacy.html');
+    document.getElementById('homeTerms').addEventListener('click', () => window.location.href = 'terms.html');
+    document.getElementById('homeContact').addEventListener('click', () => window.location.href = 'contact.html');
+
+    // ====== PASTE YOUR FULL UTILITY JAVASCRIPT HERE ======
+    // This includes all functions (renderAll, addIngredient, etc.)
+    (function() {
+        // Your existing utility code (the entire script from your final working version)
+        // Make sure it references the correct DOM elements (like monthSelect, etc.)
+        // At the end, initialize: renderIngredientInputs(); currentStock = getInitialStock(); updateDayDropdowns(); markSundays(); renderAll();
+    })();
+    // =====================================================
+</script>
+</body>
+</html>

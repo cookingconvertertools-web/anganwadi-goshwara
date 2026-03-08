@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>टर्म्स - पोषण आहार</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', 'Arial', sans-serif; background-color: #f5f9ff; color: #003366; min-height: 100vh; display: flex; flex-direction: column; }
+        .app-header { background: #004cbf; color: white; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.2); position: sticky; top: 0; z-index: 100; }
+        .app-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; }
+        .menu-btn, .back-btn { background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer; padding: 0 10px; }
+        .back-btn { font-size: 1.5rem; }
+        .drawer { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: white; box-shadow: 2px 0 10px rgba(0,0,0,0.3); transition: left 0.3s ease; z-index: 200; padding: 20px; border-right: 2px solid #004cbf; }
+        .drawer.open { left: 0; }
+        .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 150; display: none; }
+        .drawer-overlay.open { display: block; }
+        .drawer ul { list-style: none; margin-top: 40px; }
+        .drawer li { margin-bottom: 20px; }
+        .drawer a { text-decoration: none; color: #003366; font-size: 1.2rem; font-weight: 600; display: block; padding: 10px; border-radius: 30px; background: #eaf3ff; text-align: center; }
+        .main-content { flex: 1; padding: 20px; }
+        .page-title { font-size: 2rem; font-weight: 700; color: #002b70; margin-bottom: 20px; border-left: 6px solid #1e4d8f; padding-left: 15px; }
+        .content-card { background: white; border-radius: 30px; padding: 25px; border: 2px solid #7ca4d4; box-shadow: 0 4px 8px rgba(0,40,100,0.1); }
+        .content-card p { font-size: 1.2rem; line-height: 1.6; margin-bottom: 15px; }
+        /* Footer styles */
+        .app-footer {
+            background: #d9e8ff;
+            color: #003366;
+            text-align: center;
+            padding: 15px;
+            font-size: 0.9rem;
+            border-top: 2px solid #004cbf;
+        }
+        @media print { .no-print { display: none; } }
+    </style>
+</head>
+<body>
+<header class="app-header no-print">
+    <button class="menu-btn" id="menuBtn">☰</button>
+    <h1>टर्म्स</h1>
+    <button class="back-btn" id="backBtn" onclick="window.location.href='index.html'">↩</button>
+</header>
+
+<div class="drawer" id="drawer">
+    <ul>
+        <li><a href="index.html">🏠 होम</a></li>
+        <li><a href="about.html">📄 About</a></li>
+        <li><a href="privacy.html">🔏 Privacy</a></li>
+        <li><a href="terms.html">📜 Terms</a></li>
+        <li><a href="contact.html">📞 Contact</a></li>
+    </ul>
+</div>
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<main class="main-content">
+    <h2 class="page-title">वापराच्या अटी</h2>
+    <div class="content-card">
+        <p>हे सॉफ्टवेअर मोफत वापरता येते. यातील कोणताही डेटा हा वापरकर्त्याच्या स्वतःच्या जबाबदारीवर आधारित आहे.</p>
+        <p>आम्ही डेटा हरवल्यास किंवा चुकीच्या हिशोबास जबाबदार राहणार नाही. नियमित बॅकअप घ्यावा.</p>
+    </div>
+</main>
+
+<footer class="app-footer no-print">
+    <p>© <span id="currentYear"></span> पोषण आहार. सर्व हक्क राखीव.</p>
+</footer>
+
+<script>
+    const drawer = document.getElementById('drawer');
+    const overlay = document.getElementById('drawerOverlay');
+    document.getElementById('menuBtn').addEventListener('click', () => {
+        drawer.classList.add('open');
+        overlay.classList.add('open');
+    });
+    overlay.addEventListener('click', () => {
+        drawer.classList.remove('open');
+        overlay.classList.remove('open');
+    });
+
+    // Set current year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

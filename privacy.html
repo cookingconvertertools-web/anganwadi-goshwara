@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>प्रायव्हसी - पोषण आहार</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', 'Arial', sans-serif; background-color: #f5f9ff; color: #003366; min-height: 100vh; display: flex; flex-direction: column; }
+        .app-header { background: #004cbf; color: white; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.2); position: sticky; top: 0; z-index: 100; }
+        .app-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; }
+        .menu-btn, .back-btn { background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer; padding: 0 10px; }
+        .back-btn { font-size: 1.5rem; }
+        .drawer { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: white; box-shadow: 2px 0 10px rgba(0,0,0,0.3); transition: left 0.3s ease; z-index: 200; padding: 20px; border-right: 2px solid #004cbf; }
+        .drawer.open { left: 0; }
+        .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 150; display: none; }
+        .drawer-overlay.open { display: block; }
+        .drawer ul { list-style: none; margin-top: 40px; }
+        .drawer li { margin-bottom: 20px; }
+        .drawer a { text-decoration: none; color: #003366; font-size: 1.2rem; font-weight: 600; display: block; padding: 10px; border-radius: 30px; background: #eaf3ff; text-align: center; }
+        .main-content { flex: 1; padding: 20px; }
+        .page-title { font-size: 2rem; font-weight: 700; color: #002b70; margin-bottom: 20px; border-left: 6px solid #1e4d8f; padding-left: 15px; }
+        .content-card { background: white; border-radius: 30px; padding: 25px; border: 2px solid #7ca4d4; box-shadow: 0 4px 8px rgba(0,40,100,0.1); }
+        .content-card p { font-size: 1.2rem; line-height: 1.6; margin-bottom: 15px; }
+        /* Footer styles */
+        .app-footer {
+            background: #d9e8ff;
+            color: #003366;
+            text-align: center;
+            padding: 15px;
+            font-size: 0.9rem;
+            border-top: 2px solid #004cbf;
+        }
+        @media print { .no-print { display: none; } }
+    </style>
+</head>
+<body>
+<header class="app-header no-print">
+    <button class="menu-btn" id="menuBtn">☰</button>
+    <h1>प्रायव्हसी</h1>
+    <button class="back-btn" id="backBtn" onclick="window.location.href='index.html'">↩</button>
+</header>
+
+<div class="drawer" id="drawer">
+    <ul>
+        <li><a href="index.html">🏠 होम</a></li>
+        <li><a href="about.html">📄 About</a></li>
+        <li><a href="privacy.html">🔏 Privacy</a></li>
+        <li><a href="terms.html">📜 Terms</a></li>
+        <li><a href="contact.html">📞 Contact</a></li>
+    </ul>
+</div>
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<main class="main-content">
+    <h2 class="page-title">गोपनीयता धोरण</h2>
+    <div class="content-card">
+        <p>ही गोपनीयता धोरण (Privacy Policy) आमच्या वेबसाइटचा वापर करताना तुमची माहिती कशी हाताळली जाते याबद्दल स्पष्ट माहिती देण्यासाठी तयार करण्यात आले आहे. आमचे मुख्य उद्दिष्ट अंगणवाडी सेविकांना गोषवारा तयार करण्याचे काम सोपे आणि जलद करण्यासाठी एक साधे साधन उपलब्ध करून देणे आहे. त्यामुळे वापरकर्त्यांची गोपनीयता आणि सुरक्षितता आमच्यासाठी अत्यंत महत्त्वाची आहे.</p>
+
+        <p>आमची वेबसाइट वापरताना तुम्हाला गोषवारा तयार करण्यासाठी काही आकडे किंवा माहिती भरावी लागू शकते. ही माहिती केवळ गणना करण्यासाठी वापरली जाते. आम्ही तुमच्याकडून भरलेली कोणतीही वैयक्तिक माहिती किंवा डेटा आमच्या सर्व्हरवर साठवून ठेवत नाही.</p>
+
+        <p>या वेबसाइटवर भरलेली माहिती फक्त त्या क्षणापुरती वापरली जाते आणि गोषवारा तयार करण्यासाठी आवश्यक असलेली गणिते करण्यासाठीच वापरली जाते. तुमची माहिती आमच्याकडे कायमस्वरूपी जतन केली जात नाही आणि ती कोणत्याही डेटाबेसमध्ये संग्रहित केली जात नाही.</p>
+
+        <p>आम्ही वापरकर्त्यांची कोणतीही वैयक्तिक ओळख पटेल अशी माहिती जसे की नाव, पत्ता, मोबाईल नंबर किंवा इतर वैयक्तिक तपशील गोळा करत नाही. आमची सेवा वापरण्यासाठी तुम्हाला कोणतीही वैयक्तिक माहिती देण्याची आवश्यकता नाही.</p>
+
+        <p>आम्ही तुमचा डेटा कोणत्याही तृतीय पक्षासोबत (third party) विकत नाही, शेअर करत नाही किंवा कोणत्याही व्यावसायिक उद्देशाने वापरत नाही. वापरकर्त्यांची गोपनीयता राखणे ही आमची प्राथमिक जबाबदारी आहे.</p>
+
+        <p>ही वेबसाइट वापरताना काही सामान्य तांत्रिक माहिती जसे की ब्राउझर प्रकार, डिव्हाइस प्रकार किंवा वेबसाइट वापराशी संबंधित सामान्य विश्लेषणात्मक माहिती (analytics data) स्वयंचलितपणे गोळा होऊ शकते. ही माहिती वेबसाइट अधिक चांगली बनवण्यासाठी आणि वापरकर्त्यांचा अनुभव सुधारण्यासाठी वापरली जाऊ शकते.</p>
+
+        <p>आमच्या वेबसाइटवर तृतीय पक्षाच्या जाहिरात सेवा जसे की Google AdSense वापरल्या जाऊ शकतात. Google सारख्या जाहिरात सेवा वापरकर्त्यांना त्यांच्या आवडी आणि ब्राउझिंग पद्धतीनुसार जाहिराती दाखवण्यासाठी cookies किंवा इतर तंत्रज्ञानाचा वापर करू शकतात.</p>
+
+        <p>Google आणि इतर तृतीय पक्ष विक्रेते cookies वापरून वापरकर्त्यांनी या वेबसाइटला किंवा इतर वेबसाइटना दिलेल्या भेटींवर आधारित जाहिराती दाखवू शकतात. या cookies मुळे वापरकर्त्यांना अधिक संबंधित आणि उपयुक्त जाहिराती दिसू शकतात.</p>
+
+        <p>जर तुम्हाला वैयक्तिकृत जाहिराती (personalized ads) पाहायच्या नसतील तर तुम्ही Google Ads Settings मध्ये जाऊन त्या बंद करू शकता. तसेच तुम्ही तुमच्या ब्राउझरमध्ये cookies बंद करण्याचा पर्याय देखील वापरू शकता.</p>
+
+        <p>आमची वेबसाइट इतर बाह्य वेबसाइट्सच्या लिंक देऊ शकते. त्या वेबसाइट्सचे स्वतःचे गोपनीयता धोरण असू शकते आणि त्यावर आमचे नियंत्रण नसते. त्यामुळे अशा बाह्य वेबसाइट्स वापरण्यापूर्वी त्यांचे गोपनीयता धोरण वाचणे योग्य ठरेल.</p>
+
+        <p>आम्ही वेळोवेळी हे गोपनीयता धोरण अद्ययावत (update) करू शकतो. त्यामुळे वापरकर्त्यांनी वेळोवेळी ही पृष्ठ तपासून नवीन बदलांची माहिती घेणे योग्य ठरेल.</p>
+
+        <p>या वेबसाइटचा वापर केल्याने तुम्ही या गोपनीयता धोरणातील अटी मान्य करता असे समजले जाईल.</p>
+
+        <p>जर तुम्हाला या गोपनीयता धोरणाबद्दल कोणतेही प्रश्न असतील किंवा अधिक माहिती हवी असेल तर तुम्ही आम्हाला ईमेलद्वारे संपर्क करू शकता.</p>
+
+        <p>संपर्क ईमेल: cookingconverter.tools@gmail.com</p>
+    </div>
+</main>
+
+<footer class="app-footer no-print">
+    <p>© <span id="currentYear"></span> पोषण आहार. सर्व हक्क राखीव.</p>
+</footer>
+
+<script>
+    const drawer = document.getElementById('drawer');
+    const overlay = document.getElementById('drawerOverlay');
+    document.getElementById('menuBtn').addEventListener('click', () => {
+        drawer.classList.add('open');
+        overlay.classList.add('open');
+    });
+    overlay.addEventListener('click', () => {
+        drawer.classList.remove('open');
+        overlay.classList.remove('open');
+    });
+
+    // Set current year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

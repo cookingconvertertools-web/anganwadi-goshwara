@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>अबाउट - पोषण आहार</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background-color: #f5f9ff;
+            color: #003366;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .app-header {
+            background: #004cbf;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .app-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; }
+        .menu-btn, .back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 0 10px;
+        }
+        .back-btn { font-size: 1.5rem; }
+        .drawer {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+            transition: left 0.3s ease;
+            z-index: 200;
+            padding: 20px;
+            border-right: 2px solid #004cbf;
+        }
+        .drawer.open { left: 0; }
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 150;
+            display: none;
+        }
+        .drawer-overlay.open { display: block; }
+        .drawer ul { list-style: none; margin-top: 40px; }
+        .drawer li { margin-bottom: 20px; }
+        .drawer a {
+            text-decoration: none;
+            color: #003366;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: block;
+            padding: 10px;
+            border-radius: 30px;
+            background: #eaf3ff;
+            text-align: center;
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #002b70;
+            margin-bottom: 20px;
+            border-left: 6px solid #1e4d8f;
+            padding-left: 15px;
+        }
+        .content-card {
+            background: white;
+            border-radius: 30px;
+            padding: 25px;
+            border: 2px solid #7ca4d4;
+            box-shadow: 0 4px 8px rgba(0,40,100,0.1);
+        }
+        .content-card p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .app-footer {
+            background: #d9e8ff;
+            color: #003366;
+            text-align: center;
+            padding: 15px;
+            font-size: 0.9rem;
+            border-top: 2px solid #004cbf;
+        }
+        @media print { .no-print { display: none; } }
+    </style>
+</head>
+<body>
+<header class="app-header no-print">
+    <button class="menu-btn" id="menuBtn">☰</button>
+    <h1>अबाउट</h1>
+    <button class="back-btn" id="backBtn" onclick="window.location.href='index.html'">↩</button>
+</header>
+
+<div class="drawer" id="drawer">
+    <ul>
+        <li><a href="index.html">🏠 होम</a></li>
+        <li><a href="about.html">📄 About</a></li>
+        <li><a href="privacy.html">🔏 Privacy</a></li>
+        <li><a href="terms.html">📜 Terms</a></li>
+        <li><a href="contact.html">📞 Contact</a></li>
+    </ul>
+</div>
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<main class="main-content">
+    <h2 class="page-title">आमच्याबद्दल</h2>
+    <div class="content-card">
+        <p>अंगणवाडी व्यवस्था ही भारतातील बालकांच्या आरोग्य, पोषण आणि शिक्षणासाठी अत्यंत महत्त्वाची कडी आहे. गावागावात काम करणाऱ्या अंगणवाडी सेविका लहान मुलांचे पोषण, गर्भवती महिलांची काळजी तसेच कुटुंबांना आरोग्यविषयक मार्गदर्शन देण्याचे अत्यंत जबाबदारीचे काम करत असतात. या सेविका आपल्या गावातील मुलांचे भविष्य घडवण्यासाठी दररोज मेहनत घेत असतात. त्यांचे काम केवळ नोकरी नसून समाजासाठी एक मोठी सेवा आहे.</p>
+
+        <p>अंगणवाडी सेविका बालकांच्या आरोग्याची काळजी घेणे, त्यांना योग्य पोषण मिळत आहे का हे पाहणे, गर्भवती आणि स्तनपान करणाऱ्या मातांना मार्गदर्शन करणे आणि कुटुंबांना आरोग्य व पोषणाबद्दल माहिती देणे अशी अनेक महत्त्वाची कामे करत असतात. त्यामुळे त्या गावातील आरोग्य व्यवस्थेचा एक महत्त्वाचा आधारस्तंभ मानल्या जातात.</p>
+
+        <p>परंतु या महत्त्वाच्या कामासोबत अंगणवाडी सेविकांवर अनेक प्रकारच्या नोंदी, अहवाल आणि कागदपत्रे तयार करण्याची जबाबदारी देखील असते. प्रत्येक महिन्याला तयार करावा लागणारा गोषवारा हा त्यातील एक अत्यंत महत्त्वाचा भाग आहे. गोषवारा तयार करताना अनेक नोंदी तपासाव्या लागतात आणि वेगवेगळ्या आकड्यांची बेरीज करावी लागते.</p>
+
+        <p>अनेक ठिकाणी हे सर्व काम हाताने किंवा कॅल्क्युलेटर वापरून केले जाते. त्यामुळे गोषवारा तयार करताना खूप वेळ लागतो. कधी कधी एका गोषवाऱ्यासाठी एक तास किंवा त्याहून अधिक वेळ लागतो. जर गणितात थोडीशी चूक झाली तर पुन्हा सर्व आकडे तपासावे लागतात आणि पुन्हा गणना करावी लागते.</p>
+
+        <p>या सर्व प्रक्रियेमुळे अंगणवाडी सेविकांचा मौल्यवान वेळ खर्च होतो. हा वेळ प्रत्यक्षात मुलांच्या विकासासाठी, त्यांच्या शिक्षणासाठी किंवा मातांना मार्गदर्शन करण्यासाठी वापरता आला असता. त्यामुळे हे काम सोपे आणि जलद करण्याची गरज आम्हाला जाणवली.</p>
+
+        <p>याच विचारातून आम्ही एक छोटासा पण उपयुक्त प्रयत्न सुरू केला आहे. आमचे उद्दिष्ट खूप सोपे आहे – अंगणवाडी सेविकांना गोषवारा तयार करण्याचे काम जलद, सोपे आणि अचूक बनवणे.</p>
+
+        <p>पूर्वी ज्या गोषवाऱ्यासाठी तासभर किंवा त्याहून अधिक वेळ लागत होता, तोच गोषवारा आता फक्त एका मिनिटात तयार करता येईल असे आम्ही एक साधन तयार केले आहे. या साधनाच्या मदतीने सेविकांना फक्त आवश्यक माहिती भरायची आहे आणि बाकीची सर्व गणिते आपोआप पूर्ण होतात.</p>
+
+        <p>यामुळे कॅल्क्युलेटर वापरण्याची गरज राहत नाही आणि चूक होण्याची शक्यता देखील खूप कमी होते. सर्व आकडे आपोआप मोजले जात असल्यामुळे अहवाल अधिक अचूक तयार होतो आणि सेविकांना पुन्हा पुन्हा गणना करण्याची गरज राहत नाही.</p>
+
+        <p>या साधनाचा सर्वात मोठा फायदा म्हणजे अंगणवाडी सेविकांचा वेळ वाचतो. ज्या कामासाठी आधी तासभर लागायचा, तेच काम आता काही क्षणांत पूर्ण होते. त्यामुळे सेविकांना त्यांच्या मुख्य कामावर म्हणजेच बालकांच्या आरोग्य, पोषण आणि शिक्षणावर अधिक लक्ष केंद्रित करता येते.</p>
+
+        <p>आमचा विश्वास आहे की अंगणवाडी सेविका या आपल्या समाजातील खऱ्या अर्थाने बदल घडवणाऱ्या व्यक्ती आहेत. त्या रोज आपल्या मेहनतीने अनेक मुलांचे आयुष्य सुधारण्याचे काम करत असतात. त्यांच्या कामात थोडीशी मदत झाली तरी त्याचा फायदा हजारो मुलांना आणि कुटुंबांना होऊ शकतो.</p>
+
+        <p>हीच भावना मनात ठेवून आम्ही हे साधन तयार केले आहे. हे केवळ एक तांत्रिक साधन नाही, तर अंगणवाडी सेविकांच्या कामाचा सन्मान करण्याचा आणि त्यांना मदत करण्याचा एक छोटासा प्रयत्न आहे.</p>
+
+        <p>हे साधन शक्य तितके सोपे आणि वापरण्यास सुलभ ठेवण्याचा प्रयत्न करण्यात आला आहे. कोणालाही सहज समजेल आणि काही मिनिटांत वापरता येईल असे हे तयार केले आहे, जेणेकरून प्रत्येक सेविका याचा सहज वापर करू शकेल.</p>
+
+        <p>आजच्या डिजिटल युगात तंत्रज्ञानाचा योग्य वापर केला तर अनेक कामे सोपी होऊ शकतात. आमचा हा प्रयत्न देखील त्याच दिशेने एक छोटासा पाऊल आहे. यामुळे अंगणवाडी सेविकांचे काम अधिक सोपे आणि जलद होईल अशी आम्हाला आशा आहे.</p>
+
+        <p>अंगणवाडी सेविका म्हणजे आपल्या समाजाची मजबूत पायाभरणी करणाऱ्या व्यक्ती. त्यांच्या कष्टांमुळेच अनेक मुलांना चांगले आरोग्य, योग्य पोषण आणि उज्ज्वल भविष्य मिळते.</p>
+
+        <p>जर आमच्या या छोट्याशा प्रयत्नामुळे एखाद्या अंगणवाडी सेविकेचा थोडासा वेळ वाचला आणि तिचे काम थोडे सोपे झाले, तर आम्हाला वाटेल की आमचे काम यशस्वी झाले. कारण अंगणवाडी सेविकांचा वेळ वाचवणे म्हणजे मुलांच्या भविष्यासाठी अधिक वेळ देणे होय.</p>
+    </div>
+</main>
+
+<footer class="app-footer no-print">
+    <p>© <span id="currentYear"></span> पोषण आहार. सर्व हक्क राखीव.</p>
+</footer>
+
+<script>
+    // Set current year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    const drawer = document.getElementById('drawer');
+    const overlay = document.getElementById('drawerOverlay');
+    document.getElementById('menuBtn').addEventListener('click', () => {
+        drawer.classList.add('open');
+        overlay.classList.add('open');
+    });
+    overlay.addEventListener('click', () => {
+        drawer.classList.remove('open');
+        overlay.classList.remove('open');
+    });
+</script>
+</body>
+</html>
