@@ -344,6 +344,7 @@
             border-radius: 20px;
             border: 2px solid #1e4d8f;
             background: white;
+            position: relative;
         }
 
         table {
@@ -367,6 +368,31 @@
             text-align: center;
             padding: 6px 3px;
             color: #001f4f;
+        }
+
+        /* Make the first column sticky */
+        th:first-child,
+        td:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 10;
+            background-color: inherit;
+        }
+        /* Ensure header background doesn't become transparent */
+        th:first-child {
+            background-color: #d1e2ff;
+            z-index: 20;
+        }
+        /* For normal rows, ensure background matches to avoid transparency */
+        tr:not(.leave-row):not(.footer-row) td:first-child {
+            background-color: white;
+        }
+        /* Leave rows have merged cells, we don't apply sticky there */
+        .leave-row td:first-child {
+            position: static;
+        }
+        .footer-row td:first-child {
+            position: static;
         }
 
         .empty-top {
@@ -503,7 +529,7 @@
             margin: 20px 0 30px 0;
         }
 
-        /* ========== PRINT: FULL PAGE FIT ========== */
+        /* ========== PRINT: USE A3 LANDSCAPE TO FIT ALL COLUMNS ========== */
         @media print {
             .no-print, .page-tab, .btn, .leave-controls, .control-panel, .ad, .collapsible-header, .app-header, .drawer, .drawer-overlay, .app-footer {
                 display: none !important;
@@ -516,8 +542,8 @@
                 overflow: visible;
             }
             @page {
-                size: A4 landscape;
-                margin: 2mm 2mm 0mm 2mm;
+                size: A3 landscape;  /* Larger size to accommodate wide table */
+                margin: 5mm 3mm 5mm 3mm;
             }
             body {
                 padding: 0;
@@ -539,16 +565,18 @@
                 margin: 0;
                 padding: 0;
                 height: auto;
+                max-width: none;
             }
             #nutritionTable {
-                font-size: 7.2px !important;
-                line-height: 1.05;
+                font-size: 9px !important;   /* Slightly larger font for readability */
+                line-height: 1.2;
                 width: 100%;
                 border-collapse: collapse;
                 page-break-after: avoid;
                 page-break-before: avoid;
                 page-break-inside: avoid;
                 border: 1px solid #000;
+                table-layout: auto;          /* Let content determine column width */
             }
             #nutritionTable tr,
             #nutritionTable td,
@@ -562,21 +590,24 @@
             }
             #nutritionTable td,
             #nutritionTable th {
-                padding: 0.5px 0.3px !important;
-                border: 0.8px solid #000;
+                padding: 2px 4px !important;
+                border: 1px solid #000;
             }
             #nutritionTable th {
-                font-size: 7px;
-                padding: 1px 0.3px !important;
+                font-size: 9px !important;
+                padding: 3px 4px !important;
             }
             #nutritionTable tfoot {
                 display: table-footer-group;
             }
             .header-line {
-                margin-bottom: 1px;
-                padding: 2px 2px;
-                font-size: 10px;
+                margin-bottom: 5px;
+                padding: 5px 8px;
+                font-size: 12px;
                 border: 1px solid #000;
+                background: #e2edff;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
             #page2 {
                 page-break-after: avoid;
@@ -584,7 +615,7 @@
             .summary-container {
                 page-break-inside: avoid;
                 border: 2px solid #000;
-                padding: 5px;
+                padding: 10px;
                 margin-top: 0;
             }
             .footer-row td {
@@ -598,11 +629,15 @@
                 print-color-adjust: exact;
             }
             .header-line span {
-                font-size: 9px;
+                font-size: 12px;
             }
             .collapsible-content {
                 max-height: none !important;
                 display: block !important;
+            }
+            /* Remove sticky for print */
+            th:first-child, td:first-child {
+                position: static;
             }
         }
     </style>
@@ -733,7 +768,7 @@
                     <th rowspan="2">मुली</th>
                     <th rowspan="2">एकूण</th>
                 </tr>
-                <tr id="headerRow2"></tr>
+                <tr id="headerRow2">  </tr>
                 </thead>
                 <tbody id="tableBody"></tbody>
                 <tfoot id="tableFooter"></tfoot>
